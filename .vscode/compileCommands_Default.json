@@ -1,0 +1,57 @@
+[
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowCartridge.cpp",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowCartridge.h",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowGame.Build.cs",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowGame.cpp",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowGame.h",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowGameGameModeBase.cpp",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\BullCowGameGameModeBase.h",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\Console\\\\Cartridge.cpp",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\Console\\\\Cartridge.h",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\Console\\\\Terminal.cpp",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\Repo\\\\Unreal Engine C++ Developer\\\\BullCowGame\\\\Source\\\\BullCowGame\\\\Console\\\\Terminal.h",
+		"command": "cl.exe @\"F:\\Projects\\Repo\\Unreal Engine C++ Developer\\BullCowGame\\.vscode\\compileCommands_Default\\BullCowGame.190.rsp\"",
+		"directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+	}
+]
