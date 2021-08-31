@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundBase.h"
 #include "Terminal.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTextUpdateSignature, FString, Text);
@@ -46,6 +47,8 @@ private:
 	FString GetKeyString(FKey Key) const;
 	void UpdateText();
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* KeyboardSFX;
 
 	UPROPERTY(EditAnywhere)
 	int32 MaxLines = 10;

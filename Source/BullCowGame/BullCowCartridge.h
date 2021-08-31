@@ -17,7 +17,7 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	virtual void BeginPlay() override;
 	virtual void OnInput(const FString& Input) override;
 	void SetupGame();
@@ -27,11 +27,19 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 	TArray<FString> GetValidWords(const TArray<FString>& Words) const;
 	FBullCowCount GetBullCows(const FString& Guess) const;
 
-	// Your declarations go below!
-	private:
+// Your declarations go below!
+private:
 	FString HiddenWord;
 	int32 Lives;
 	bool bGameOver;
 	TArray<FString> Words;
 	TArray<FString> Isograms;
+
+	
+	UPROPERTY(EditAnywhere)
+	USoundBase* KeyboardSFX;
+	UPROPERTY(EditAnywhere)
+	USoundBase* ErrorSFX;
+	UPROPERTY(EditAnywhere)
+	USoundBase* SuccessSFX;
 };

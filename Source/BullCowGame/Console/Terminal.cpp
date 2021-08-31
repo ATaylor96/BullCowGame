@@ -107,6 +107,11 @@ FString UTerminal::JoinWithNewline(const TArray<FString>& Lines) const
 
 void UTerminal::OnKeyDown(FKey Key)
 {
+	if (KeyboardSFX != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), KeyboardSFX, GetOwner()->GetActorLocation());
+	}
+
 	if (Key == EKeys::Enter)
 	{
 		AcceptInputLine();

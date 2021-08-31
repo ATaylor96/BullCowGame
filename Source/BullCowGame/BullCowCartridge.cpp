@@ -1,6 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
 #include "BullCowCartridge.h"
-// #include "Math/UnrealMathUtility.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
+
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
@@ -42,9 +45,9 @@ void UBullCowCartridge::SetupGame()
     Lives = HiddenWord.Len();
     bGameOver = false;
 
-    PrintLine(TEXT("Guess the %i letter word. You have %i lives."), HiddenWord.Len(), Lives);
+    PrintLine(TEXT("Guess the %i letter password. You have %i attempts."), HiddenWord.Len(), Lives);
     
-    PrintLine(TEXT("Type in your guess and press\nEnter to continue...")); // Prompt player for guess
+    PrintLine(TEXT("Type in your guess and press %s\nEnter to continue..."), *HiddenWord); // Prompt player for guess
 }
 
 void UBullCowCartridge::EndGame()
@@ -58,6 +61,10 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     if (Guess == HiddenWord)
     {
         ClearScreen();
+        if (SuccessSFX != nullptr)
+        {
+            UGameplayStatics::PlaySoundAtLocation(GetWorld(), SuccessSFX, GetOwner()->GetActorLocation(), 3.0f);
+        }
         PrintLine(TEXT("You have won!"));
         EndGame();
         return;
@@ -79,6 +86,10 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     }
 
     // Remove a Life
+    if (ErrorSFX != nullptr)
+	{
+        UGameplayStatics::PlaySoundAtLocation(GetWorld(), ErrorSFX, GetOwner()->GetActorLocation());
+    }
     PrintLine(TEXT("You lost a life..."));
     --Lives;
 
