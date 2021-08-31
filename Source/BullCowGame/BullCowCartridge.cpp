@@ -33,18 +33,17 @@ void UBullCowCartridge::OnInput(const FString& PlayerInput) // When the player h
 void UBullCowCartridge::SetupGame()
 {
     // Welcoming the Player
-    PrintLine(TEXT("Welcome to Bull Cows!"));
-
-
+    PrintLine(TEXT("Welcome to..."));
+    const char* IntroChar = " _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n";
+    FString IntroString(IntroChar);
+    PrintLine(TEXT("%s"), *IntroString);
 
     HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
     Lives = HiddenWord.Len();
     bGameOver = false;
 
-    PrintLine(TEXT("Guess the %i letter word."), HiddenWord.Len());
-    PrintLine(TEXT("The HiddenWord is: %s\n"), *HiddenWord); // DEBUG
-
-    PrintLine(TEXT("You have %i lives."), Lives);
+    PrintLine(TEXT("Guess the %i letter word. You have %i lives."), HiddenWord.Len(), Lives);
+    
     PrintLine(TEXT("Type in your guess and press\nEnter to continue...")); // Prompt player for guess
 }
 
