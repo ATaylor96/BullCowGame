@@ -2,12 +2,19 @@
 #include "BullCowCartridge.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ActorComponent.h"
+#include "Console/Terminal.h"
+#include "GameFramework/PlayerController.h"
 #include "GameFramework/Actor.h"
 
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
+
+    GetOwner()->FindComponentByClass<UTerminal>()->ActivateTerminal();
+
+    // APlayerController* Controller = UGameplayerStatics::GetPlayerController(this, 0);
+    // Controller->SetIgnoreLookInput(true);
 
     FBullCowCount Count;
 
@@ -53,11 +60,12 @@ void UBullCowCartridge::SetupGame()
 void UBullCowCartridge::EndGame()
 {
     bGameOver = true;
-    PrintLine(TEXT("\nPress Enter to play again."));
+    PrintLine(TEXT("\nPress Enter to try again."));
 }
 
 void UBullCowCartridge::ProcessGuess(const FString& Guess)
 {
+    ClearScreen();
     if (Guess == HiddenWord)
     {
         ClearScreen();
@@ -65,7 +73,7 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
         {
             UGameplayStatics::PlaySoundAtLocation(GetWorld(), SuccessSFX, GetOwner()->GetActorLocation(), 3.0f);
         }
-        PrintLine(TEXT("You have won!"));
+        PrintLine(TEXT("Login successful... Files secured."));
         EndGame();
         return;
     }
@@ -90,14 +98,16 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
 	{
         UGameplayStatics::PlaySoundAtLocation(GetWorld(), ErrorSFX, GetOwner()->GetActorLocation());
     }
-    PrintLine(TEXT("You lost a life..."));
+    PrintLine(TEXT("The password you entered was incorrect.\nPlease try again."));
     --Lives;
+    PrintLine(TEXT("%i attempts remaining..."), Lives);
 
     if (Lives <= 0)
     {
         ClearScreen();
-        PrintLine(TEXT("You have no lives left!"));
-        PrintLine(TEXT("The hidden word was: %s"), *HiddenWord);
+        PrintLine(TEXT(" ______      _____ _      ______ _____  \n|  ____/\\   |_   _| |    |  ____|  __ \\ \n| |__ /  \\    | | | |    | |__  | |  | |\n|  __/ /\\ \\   | | | |    |  __| | |  | |\n| | / ____ \\ _| |_| |____| |____| |__| |\n|_|/_/    \\_\\_____|______|______|_____/ "));
+        PrintLine(TEXT("\nToo many login attempts.\nYou have been locked out."));
+        PrintLine(TEXT("The password was: %s"), *HiddenWord);
         EndGame();
         return;
     }
