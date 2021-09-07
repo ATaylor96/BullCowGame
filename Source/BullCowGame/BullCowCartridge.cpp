@@ -52,7 +52,7 @@ void UBullCowCartridge::SetupGame()
     Lives = HiddenWord.Len();
     bGameOver = false;
 
-    PrintLine(TEXT("Guess the %i letter password. You have %i attempts."), HiddenWord.Len(), Lives);
+    PrintLine(TEXT("Guess the password. You have %i attempts."), HiddenWord.Len(), Lives);
     
     PrintLine(TEXT("Type in your guess and press %s\nEnter to continue..."), *HiddenWord); // Prompt player for guess
 }
