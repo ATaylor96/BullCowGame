@@ -2,6 +2,7 @@
 #include "BullCowCartridge.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ActorComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Console/Terminal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Actor.h"
@@ -11,10 +12,25 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
 
-    GetOwner()->FindComponentByClass<UTerminal>()->ActivateTerminal();
+    Terminal = GetOwner()->FindComponentByClass<UTerminal>();
+    TArray<UActorComponent*> Components = GetOwner()->GetComponentsByClass(UTextRenderComponent::StaticClass()); 
 
-    // APlayerController* Controller = UGameplayerStatics::GetPlayerController(this, 0);
-    // Controller->SetIgnoreLookInput(true);
+    for (UActorComponent* Comp : Components)
+    {
+        if (Comp->GetName() == "TimerTextRender")
+        {
+            TimerText = Cast<UTextRenderComponent>(Comp);
+        }
+        else if (Comp->GetName() == "LevelTextRender")
+        {
+            LevelText = Cast<UTextRenderComponent>(Comp);
+        }
+    }
+
+    if (Terminal != nullptr)
+    {
+        Terminal->ActivateTerminal();
+    }
 
     FBullCowCount Count;
 
@@ -42,19 +58,24 @@ void UBullCowCartridge::OnInput(const FString& PlayerInput) // When the player h
 
 void UBullCowCartridge::SetupGame()
 {
+    HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
+
     // Welcoming the Player
-    PrintLine(TEXT("Welcome to..."));
+    PrintLine(TEXT("Welcome to...           DEBUG: %s"), *HiddenWord);
     const char* IntroChar = " _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n";
     FString IntroString(IntroChar);
     PrintLine(TEXT("%s"), *IntroString);
 
-    HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
+
     Lives = HiddenWord.Len();
     bGameOver = false;
 
+    LevelText->SetText(FText::FromString("Level " + FString::FromInt(CurrentLevel) + ": " + FString::FromInt(HiddenWord.Len()) + " Characters"));
+
+    GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UBullCowCartridge::Countdown, 1.0f, true);
+
     PrintLine(TEXT("Guess the password. You have %i attempts."), HiddenWord.Len(), Lives);
-    
-    PrintLine(TEXT("Type in your guess and press %s\nEnter to continue..."), *HiddenWord); // Prompt player for guess
+    PrintLine(TEXT("Type in your guess and press Enter... \n")); // Prompt player for guess
 }
 
 void UBullCowCartridge::EndGame()
@@ -118,6 +139,13 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     PrintLine(TEXT("You have %i Bulls and %i Cows"), Score.Bulls, Score.Cows);
 
     PrintLine(TEXT("Guess again, you have %i lives left."), Lives);
+}
+
+void UBullCowCartridge::Countdown() 
+{
+    --TimeLeft;
+    FString Remaining = "0:" + FString::FromInt(TimeLeft);
+    TimerText->SetText(FText::FromString(Remaining));
 }
 
 bool UBullCowCartridge::IsIsogram(const FString& Word)

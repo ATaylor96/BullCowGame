@@ -253,6 +253,8 @@
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Plugins\Editor\EditorScriptingUtilities\Intermediate\Build\Win64\UE4Editor\Inc\EditorScriptingUtilities"
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Plugins\Editor\EditorScriptingUtilities\Source"
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Plugins\Editor\EditorScriptingUtilities\Source\EditorScriptingUtilities\Public"
+/I"C:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\JsonUtilities"
+/I"C:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\JsonUtilities\Public"
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\MaterialEditor"
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Source\Editor\MaterialEditor\Public"
 /I"C:\Program Files\Epic Games\UE_4.26\Engine\Plugins\Experimental\AlembicImporter\Intermediate\Build\Win64\UE4Editor\Inc\AlembicImporter"

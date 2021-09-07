@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/TextRenderComponent.h"
 #include "Console/Cartridge.h"
+#include "Console/Terminal.h"
 #include "BullCowCartridge.generated.h"
 
 struct FBullCowCount
@@ -23,6 +25,7 @@ public:
 	void SetupGame();
 	void EndGame();
 	void ProcessGuess(const FString& Guess);
+	void Countdown();
 	static bool IsIsogram(const FString& Word);
 	TArray<FString> GetValidWords(const TArray<FString>& Words) const;
 	FBullCowCount GetBullCows(const FString& Guess) const;
@@ -31,10 +34,17 @@ public:
 private:
 	FString HiddenWord;
 	int32 Lives;
+	int32 CurrentLevel = 1;
+	int32 TimeLeft = 60;
 	bool bGameOver;
 	TArray<FString> Words;
 	TArray<FString> Isograms;
+	FTimerHandle CountdownTimerHandle;
 
+	UTextRenderComponent* LevelText;
+	UTextRenderComponent* TimerText;
+
+	UTerminal* Terminal;
 	
 	UPROPERTY(EditAnywhere)
 	USoundBase* KeyboardSFX;
