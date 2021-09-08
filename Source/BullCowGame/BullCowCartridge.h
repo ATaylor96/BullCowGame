@@ -22,8 +22,9 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 public:
 	virtual void BeginPlay() override;
 	virtual void OnInput(const FString& Input) override;
+	void SetupComponents();
 	void SetupGame();
-	void EndGame();
+	void EndGame(FString Reason, bool bFailed);
 	void ProcessGuess(const FString& Guess);
 	void Countdown();
 	static bool IsIsogram(const FString& Word);
@@ -35,8 +36,11 @@ private:
 	FString HiddenWord;
 	int32 Lives;
 	int32 CurrentLevel = 1;
+	int32 MaxLevel = 5;
 	int32 TimeLeft = 60;
+	int32 MaxTime = 60;
 	bool bGameOver;
+	bool bNextLevel;
 	TArray<FString> Words;
 	TArray<FString> Isograms;
 	FTimerHandle CountdownTimerHandle;
