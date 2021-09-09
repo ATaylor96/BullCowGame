@@ -8,12 +8,6 @@
 #include "Console/Terminal.h"
 #include "BullCowCartridge.generated.h"
 
-struct FBullCowCount
-{
-	int32 Bulls = 0;
-	int32 Cows = 0;
-};
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 {
@@ -29,7 +23,8 @@ public:
 	void Countdown();
 	static bool IsIsogram(const FString& Word);
 	TArray<FString> GetValidWords(const TArray<FString>& Words) const;
-	FBullCowCount GetBullCows(const FString& Guess) const;
+	FString GetBulls(const FString& Guess) const;
+	int32 GetCows(const FString& Guess) const;
 
 // Your declarations go below!
 private:
@@ -39,8 +34,8 @@ private:
 	int32 MaxLevel = 5;
 	int32 TimeLeft = 60;
 	int32 MaxTime = 60;
-	bool bGameOver;
-	bool bNextLevel;
+	bool bGameOver = false;
+	bool bNextLevel = false;
 	TArray<FString> Words;
 	TArray<FString> Isograms;
 	FTimerHandle CountdownTimerHandle;

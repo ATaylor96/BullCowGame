@@ -12,8 +12,6 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
 
-    FBullCowCount Count;
-
     const FString WordListPath = FPaths::ProjectContentDir() / TEXT("WordLists/HiddenWordList.txt");
     FFileHelper::LoadFileToStringArrayWithPredicate(Isograms, *WordListPath, [](const FString& Word)
     {
@@ -50,72 +48,75 @@ void UBullCowCartridge::SetupComponents()
     }
 }
 
+void UBullCowCartridge::SetupGame()
+{
+    HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
+    Lives = HiddenWord.Len();
+    TimeLeft = MaxTime;
+    bNextLevel = false;
+    bGameOver = false;
+
+    UE_LOG(LogTemp, Warning, TEXT("%s"), *HiddenWord); // DEBUG
+
+    // Welcoming the Player
+    PrintLine(TEXT("Welcome to..."));
+
+    // HACKER
+    const char* IntroChar = " _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n";
+    FString IntroString(IntroChar);
+    PrintLine(TEXT("%s"), *IntroString);
+
+    PrintLine(TEXT("Guess the password. You have %i attempts."), HiddenWord.Len(), Lives);
+    PrintLine(TEXT("Type in your guess and press Enter... \n")); // Prompt player for guess
+
+    // Dislay Level and Timer text
+    LevelText->SetText(FText::FromString("Level " + FString::FromInt(CurrentLevel) + ": " + FString::FromInt(HiddenWord.Len()) + " Characters"));
+    TimerText->SetText(FText::FromString("1:00"));
+
+    // Setup Countdown timer
+    GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UBullCowCartridge::Countdown, 1.0f, true);
+}
+
 void UBullCowCartridge::OnInput(const FString& PlayerInput) // When the player hits enter
 {
-    if (bGameOver)
-    {
-        CurrentLevel = 1;
-        ClearScreen();
-        SetupGame();
-    }
-    else if (bNextLevel)
+    if (bNextLevel || bGameOver)
     {
         ClearScreen();
         SetupGame();
     }
-    else // Check player guess
+    else
     {
         ProcessGuess(PlayerInput);
     }
 }
 
-void UBullCowCartridge::SetupGame()
-{
-    HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
-
-    // Welcoming the Player
-    PrintLine(TEXT("Welcome to...           DEBUG: %s"), *HiddenWord);
-    const char* IntroChar = " _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n";
-    FString IntroString(IntroChar);
-    PrintLine(TEXT("%s"), *IntroString);
-
-    Lives = HiddenWord.Len();
-    bGameOver, bNextLevel = false;
-    TimeLeft = MaxTime;
-
-    GetWorld()->GetTimerManager().SetTimer(CountdownTimerHandle, this, &UBullCowCartridge::Countdown, 1.0f, true);
-
-    LevelText->SetText(FText::FromString("Level " + FString::FromInt(CurrentLevel) + ": " + FString::FromInt(HiddenWord.Len()) + " Characters"));
-    TimerText->SetText(FText::FromString("1:00"));
-
-    PrintLine(TEXT("Guess the password. You have %i attempts."), HiddenWord.Len(), Lives);
-    PrintLine(TEXT("Type in your guess and press Enter... \n")); // Prompt player for guess
-}
-
 void UBullCowCartridge::EndGame(FString Reason, bool bFailed)
 {
+    bGameOver = true;
+    bNextLevel = false;
     if (bFailed)
     {
-        bGameOver = true;
         // FAILED
         PrintLine(TEXT(" ______      _____ _      ______ _____  \n|  ____/\\   |_   _| |    |  ____|  __ \\ \n| |__ /  \\    | | | |    | |__  | |  | |\n|  __/ /\\ \\   | | | |    |  __| | |  | |\n| | / ____ \\ _| |_| |____| |____| |__| |\n|_|/_/    \\_\\_____|______|______|_____/ "));
         PrintLine(TEXT("\n%s\nYou have been locked out."), *Reason);
         PrintLine(TEXT("The password was: %s"), *HiddenWord);
-        PrintLine(TEXT("\nPress Enter to exit."));
+        PrintLine(TEXT("\nPress Enter to try again..."));
+        CurrentLevel = 0;
     }
     else if (CurrentLevel >= MaxLevel)
     {
-        bGameOver = true;
         // SUCCESS
         PrintLine(TEXT(" _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |  | |\n|  __  | / /\\ \\| |    |  < |  __| | |  | |\n| |  | |/ ____ \\ |____| . \\| |____| |__| |\n|_|  |_/_/    \\_\\_____|_|\\_\\______|_____/ \n"));
-        PrintLine(TEXT("\nYou're in. Grab the files and log off."));
-        PrintLine(TEXT("\nPress Enter to exit."));
+        PrintLine(TEXT("\nYou're in! Grab the files and log off."));
+        PrintLine(TEXT("\nPress Enter to log off."));
+        CurrentLevel = 0;
     }
     else
     {
+        bGameOver = false;
         bNextLevel = true;
-        ++CurrentLevel;
         PrintLine(TEXT("\nPress Enter to continue..."));
+        ++CurrentLevel;
     }
 }
 
@@ -124,7 +125,6 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     ClearScreen();
     if (Guess == HiddenWord)
     {
-        ClearScreen();
         if (SuccessSFX != nullptr)
         {
             UGameplayStatics::PlaySoundAtLocation(GetWorld(), SuccessSFX, GetOwner()->GetActorLocation(), 3.0f);
@@ -159,6 +159,7 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     PrintLine(TEXT("\nThe password you entered was incorrect.\n"));
     --Lives;
 
+    // Check if Lives is 0
     if (Lives <= 0)
     {
         ClearScreen();
@@ -167,11 +168,9 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     }
 
     // Show the player Bulls and Cows
-    FBullCowCount Score = GetBullCows(Guess);
+    PrintLine(TEXT("You guessed %i letters... %s were in the right place."), GetCows(Guess), *GetBulls(Guess));
 
-    PrintLine(TEXT("You have %i Bulls and %i Cows"), Score.Bulls, Score.Cows);
     PrintLine(TEXT("Guess again, you have %i lives left."), Lives);
-    PrintLine(TEXT("%i attempts remaining..."), Lives);
 }
 
 void UBullCowCartridge::Countdown() 
@@ -225,25 +224,39 @@ TArray<FString> UBullCowCartridge::GetValidWords(const TArray<FString>& WordList
     return ValidWords;
 }
 
-FBullCowCount UBullCowCartridge::GetBullCows(const FString& Guess) const
+FString UBullCowCartridge::GetBulls(const FString& Guess) const
 {
-    FBullCowCount Count;
+    FString Bulls = "";
 
     for (int32 GuessIndex = 0; GuessIndex < Guess.Len(); GuessIndex++)
     {
         if (Guess[GuessIndex] == HiddenWord[GuessIndex])
         {
-            Count.Bulls++;
+            Bulls += Guess[GuessIndex];
             continue;
         }
+        else
+        {
+            Bulls += "_";
+        }
+    }
+    return *Bulls;
+}
+
+int32 UBullCowCartridge::GetCows(const FString& Guess) const
+{
+    int32 Cows = 0;
+
+    for (int32 GuessIndex = 0; GuessIndex < Guess.Len(); GuessIndex++)
+    {
         for (int32 HiddenIndex = 0; HiddenIndex < HiddenWord.Len(); HiddenIndex++)
         {
             if (Guess[GuessIndex] == HiddenWord[HiddenIndex])
             {
-                Count.Cows++;
+                Cows++;
                 break;
             }
         }
     }
-    return Count;
+    return Cows;
 }
