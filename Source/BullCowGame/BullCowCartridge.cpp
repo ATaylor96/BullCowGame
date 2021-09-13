@@ -18,6 +18,20 @@ void UBullCowCartridge::BeginPlay() // When the game starts
         return Word.Len() >= 4 && Word.Len() <= 8 && IsIsogram(Word);
     });
 
+    for (int32 Index = 0; Index < Isograms.Num(); Index++)
+    {
+        if (Isograms[Index].Len() == 4)
+            Level1Words.Add(Isograms[Index]);
+        else if (Isograms[Index].Len() == 5)
+            Level2Words.Add(Isograms[Index]);
+        else if (Isograms[Index].Len() == 6)
+            Level3Words.Add(Isograms[Index]);
+        else if (Isograms[Index].Len() == 7)
+            Level4Words.Add(Isograms[Index]);
+        else if (Isograms[Index].Len() == 8)
+            Level5Words.Add(Isograms[Index]);
+    }
+
     SetupComponents();
     SetupGame();
 }
@@ -50,21 +64,42 @@ void UBullCowCartridge::SetupComponents()
 
 void UBullCowCartridge::SetupGame()
 {
-    HiddenWord = Isograms[FMath::RandRange(0, Isograms.Num() - 1)];
+    if (CurrentLevel == 1)
+    {
+        HiddenWord = Level1Words[FMath::RandRange(0, Level1Words.Num() - 1)];
+        // Welcoming the Player
+        PrintLine(TEXT("Welcome to..."));
+
+        // HACKER
+        PrintLine(TEXT(" _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n"));
+    }
+    else if  (CurrentLevel == 2)
+    {
+        PrintLine(TEXT("\nCongratulations, you made it to level 2!\n\n\n\n\n\n\n"));
+        HiddenWord = Level2Words[FMath::RandRange(0, Level2Words.Num() - 1)];
+    }
+    else if  (CurrentLevel == 3)
+    {
+        PrintLine(TEXT("\nCongratulations, you made it to level 3!\n\n\n\n\n\n\n"));
+        HiddenWord = Level3Words[FMath::RandRange(0, Level3Words.Num() - 1)];
+    }
+    else if  (CurrentLevel == 4)
+    {
+        PrintLine(TEXT("\nCongratulations, you made it to level 4!\n\n\n\n\n\n\n"));
+        HiddenWord = Level4Words[FMath::RandRange(0, Level4Words.Num() - 1)];
+    }
+    else if  (CurrentLevel == 5)
+    {
+        PrintLine(TEXT("\nCongratulations, you made it to level 5!\n\n\n\n\n\n\n"));
+        HiddenWord = Level5Words[FMath::RandRange(0, Level5Words.Num() - 1)];
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("%s"), *HiddenWord); // DEBUG
+
     Lives = HiddenWord.Len();
     TimeLeft = MaxTime;
     bNextLevel = false;
     bGameOver = false;
-
-    UE_LOG(LogTemp, Warning, TEXT("%s"), *HiddenWord); // DEBUG
-
-    // Welcoming the Player
-    PrintLine(TEXT("Welcome to..."));
-
-    // HACKER
-    const char* IntroChar = " _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |__) |\n|  __  | / /\\ \\| |    |  < |  __| |  _  / \n| |  | |/ ____ \\ |____| . \\| |____| | \\ \\ \n|_|  |_/_/    \\_\\_____|_|\\_\\______|_|  \\_\\ \n";
-    FString IntroString(IntroChar);
-    PrintLine(TEXT("%s"), *IntroString);
 
     PrintLine(TEXT("Guess the password. You have %i attempts."), HiddenWord.Len(), Lives);
     PrintLine(TEXT("Type in your guess and press Enter... \n")); // Prompt player for guess
@@ -101,7 +136,7 @@ void UBullCowCartridge::EndGame(FString Reason, bool bFailed)
         PrintLine(TEXT("\n%s\nYou have been locked out."), *Reason);
         PrintLine(TEXT("The password was: %s"), *HiddenWord);
         PrintLine(TEXT("\nPress Enter to try again..."));
-        CurrentLevel = 0;
+        CurrentLevel = 1;
     }
     else if (CurrentLevel >= MaxLevel)
     {
@@ -109,7 +144,7 @@ void UBullCowCartridge::EndGame(FString Reason, bool bFailed)
         PrintLine(TEXT(" _    _          _____ _  ________ _____  \n| |  | |   /\\   / ____| |/ /  ____|  __ \\ \n| |__| |  /  \\ | |    | ' /| |__  | |  | |\n|  __  | / /\\ \\| |    |  < |  __| | |  | |\n| |  | |/ ____ \\ |____| . \\| |____| |__| |\n|_|  |_/_/    \\_\\_____|_|\\_\\______|_____/ \n"));
         PrintLine(TEXT("\nYou're in! Grab the files and log off."));
         PrintLine(TEXT("\nPress Enter to log off."));
-        CurrentLevel = 0;
+        CurrentLevel = 1;
     }
     else
     {

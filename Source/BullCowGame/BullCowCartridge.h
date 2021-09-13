@@ -36,7 +36,11 @@ private:
 	int32 MaxTime = 60;
 	bool bGameOver = false;
 	bool bNextLevel = false;
-	TArray<FString> Words;
+	TArray<FString> Level1Words;
+	TArray<FString> Level2Words;
+	TArray<FString> Level3Words;
+	TArray<FString> Level4Words;
+	TArray<FString> Level5Words;
 	TArray<FString> Isograms;
 	FTimerHandle CountdownTimerHandle;
 
